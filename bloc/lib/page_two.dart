@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:navigation/cubit/common_state.dart';
 import 'package:navigation/cubit/counter_cubit.dart';
 
 class PageTwo extends StatefulWidget {
@@ -18,9 +20,15 @@ class _PageTwoState extends State<PageTwo> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("This is page"),
-            BlocBuilder<CounterCubit, int>(
+            BlocBuilder<CounterCubit, CommonState>(
               builder: (context, state) {
-                return Text("$state");
+                if (state is CommonLoadingState) {
+                  return CupertinoActivityIndicator();
+                } else if (state is CommonSuccessState) {
+                  return Text("${state.value}");
+                } else {
+                  return Text("I don't know");
+                }
               },
             ),
           ],
